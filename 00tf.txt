@@ -1,0 +1,6 @@
+let
+True = \x y.x;
+False = \x y.y;
+If = \b t e. b t e
+in
+If True tak nie

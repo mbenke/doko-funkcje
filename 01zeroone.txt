@@ -1,0 +1,5 @@
+let 
+Z = \f x. x;
+N = \n f x. f(n f x)
+in 
+N (N Z)
