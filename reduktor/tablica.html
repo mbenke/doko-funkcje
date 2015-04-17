@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lambda Reduktor</title>
+<!-- <meta name="viewport"
+content="width=device-width,initial-scale=1.0"> -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<style lang="text/css">
+        #main { font-size: 140%; }
+	.bindingspot { text-decoration: underline; cursor: pointer; }
+	.activeboundvar { color: darkred; }
+	.lefttermredex { color: red; }
+	.righttermredex { color: blue; }
+        .abbreviationredex { color: green; }
+
+	textarea { white-space: pre; word-wrap: normal;
+		overflow-x: scroll;width: 100%; font-family: monospace; font-size: 10pt; }
+	body { margin-left : 10pt; margin-right: 10pt; }
+</style>
+</head>
+<body>
+<div class="container">
+<h3>Lambda Reduktor</h3>
+<p>Wprowadź wyrażenie i naciśnij "Wczytaj" po czym kliknij funkcję
+którą chcesz obliczyć (albo nacisnij "Oblicz")</p>
+<div>
+	<textarea id="termtextarea" rows="15">
+let true = \x\y x:		let false = \x\y y: 
+let zero = \f x.x:           let one = \f x x:
+
+
+true tak nie
+	</textarea>
+</div>
+<div id="controls">
+	<div>
+		<input type="button" class ="btn btn-default" id="newterm" value="Wczytaj">
+		<input type="button" class="btn btn-primary" id="normalize" value="Oblicz">
+		<input type="button" class="btn btn-info" id="develop" value="Krok">
+		<input type="button" class="btn" id="preprocess" value="Rozwiń definicje">
+		<label for="normalizelimit">Limit kroków</label>
+		<input type="text" id ="normalizelimit" value="5000">
+		<span id="normalresult">
+	</div>
+</div>
+<hr />
+<div id="main"></div>
+<hr />
+<pre id="debug"></pre>
+</div>
+</body>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="./f.js"></script>
+</html>
+

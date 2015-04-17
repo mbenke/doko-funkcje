@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8"><title>Lambda Reduktor</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!-- <link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+
+<style lang="text/css">
+	.bindingspot { text-decoration: underline; cursor: pointer; }
+	.activeboundvar { color: darkred; }
+	.lefttermredex { color: red; }
+	.righttermredex { color: blue; }
+	.abbreviationredex { color: green; }
+	textarea { white-space: pre; word-wrap: normal;
+		overflow-x: scroll;width: 100%; font-family: monospace; font-size: 10pt; }
+	body { margin-left : 10pt; margin-right: 10pt; }
+</style>
+</head>
+
+<body>
+<h1>Lambda Reduktor</h1>
+<p>Wprowadź wyrażenie i naciśnij "Wczytaj" po czym kliknij funkcję
+którą chcesz obliczyć (albo nacisnij "Oblicz")</p>
+<div>
+	<textarea id="termtextarea" rows="15">
+// Wartości logiczne i pary
+let true = \x\y x :		let false = \x\y y : 
+let pair = \x\y\z.z x y:
+let fst = \p. p true: 		let snd = \p. p false:
+
+
+// Liczby
+let zero = \f\x x :		let succ = \n\f\x . f(n f x): 
+let pred = \n.  snd . n ( \x. pair (succ . fst x) (fst x) )(pair zero zero)  :		
+let IsZero(n) = n (\k.false) true : 
+let add = \n1\n2. \f\x. n1 f (n2 f x) :
+let mul = \n1\n2. \f\x. n1 (n2 f) x:
+let sub = \n1\n2. n2 (\x. pred x) n1:
+let exp = \n1\n2. n2 n1:
+
+// Wszystko powyżej to pomocnicze definicje
+// Tu zaczyna się obliczane wyrażenie
+
+
+true tak nie
+	</textarea>
+</div>
+<div id="controls">
+	<div>
+		<input type="button" id="newterm" value="Wczytaj">
+		<input type="button" id="normalize" value="Oblicz">
+		<input type="button" id="develop" value="Krok">
+		<input type="button" id="preprocess" value="Rozwiń definicje">
+		<label for="normalizelimit">Limit kroków</label>
+		<input type="text" id ="normalizelimit" value="5000">
+		<span id="normalresult">
+	</div>
+	<div>
+	</div>
+</div>
+<hr>
+<div id="main"></div>
+<hr />
+<pre id="debug"></pre>
+
+</body>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="./f.js"></script>
+</html>
+
