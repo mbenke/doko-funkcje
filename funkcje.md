@@ -59,60 +59,236 @@ M  & \to & x  \qquad &  \mbox{zmienna}\\
 
 Pozwala obliczyć dokładnie to samo co maszyna Turinga.
 
-# Podstawienie
+# Funkcje wieloargumentowe
 
-$M[N/x]$ oznacza ``M z N wstawionym zamiast x''
+Funkcję $f(x,y)$ reprezentujemy jako funkcję $g$ argumentu $x$,
+która daje w wyniku funkcję argumentu $y$ tak aby
 
-$x[N/x] = N$
+$g(x)(y) = f(x,y)$
 
-$y[N/x] = y$ ($x\neq y$)
+na przykład
 
-$(M_1(M_2))[N/x] = M_1[N/x]$
+$\lambda f \lambda x. f x$ --- zastosowanie funkcji do argumentu
 
-# Notacja
+$\lambda f\lambda g\lambda x. f (g x)$ --- złożenie funkcji $f$ i $g$
 
-tekstowo `\x.M` zamiast $\lambda x.M$
-
-`\x y z.M` zamiast `\x.\y\z.M`
-
-opuszczamy nawiasy tam gdzie niepotrzebne, MNP oznacza (MN)P
+Tekstowo $\lambda$ zapisujemy jako `\`, np. `\x.x`
 
 # Kodowanie
 \relax
-Chcemy mieć True, False, If tak, żeby
+Chcemy mieć true, false, if tak, żeby
 
-* $If\ True\ tak\ nie \leadsto tak$
-* $If\ False\ tak\ nie \leadsto nie$
+* $if\ true\ tak\ nie \leadsto tak$
+* $if\ false\ tak\ nie \leadsto nie$
 
 . . .
 
 ```
-True = \x y. x
-False = \x y. y
+true = \x y. x
+false = \x y. y
 
-True x y = x
-True x y = y
+true x y = x
+true x y = y
 ```
 
 . . .
 
 	
 ```
-If b t e = b t e
+if b t e = b t e
+```
+
+# Kalkulator
+
+## http://benke.org/doko
+
+# Ćwiczenie 1
+\relax
+Zdefiniuj not tak, żeby
+
+```
+not true = false
+not false = true
+```
+
+. . .
+
+```
+not = \b. b false true
+```
+
+# Ćwiczenie 2: pary
+\relax
+
+```
+fst (pair x y) = x
+snd (pair x y) = y
+```
+
+. . .
+```
+pair = \x\y\z.z x y
+fst = \p.p true
+snd = \p.p false
 ```
 
 # Liczby naturalne
-
+\relax
 Pomysł:
 
 $n\ f\ x = f^{\,n}(x)$
 
 . . .
 
-`0 = \f x.x`
+`zero = \f x.x`
 
-`1 = \f x.f x`
+`one = \f x.f x`
 
-`2 = \f x.f(f x)`
+`two = \f x.f(f x)`
 
-Jak zdefiniować funkcję Następnika: `N x = x+1` ?
+Jak zdefiniować funkcję następnika: `succ x = x+1` ?
+
+. . .
+
+$succ: f^{\,n}(x) \mapsto f(f^{\,n}(x)) $
+
+. . .
+
+`succ = \n f x. f(n f x)` 
+
+# Ćwiczenie 3 - arytmetyka
+\relax
+
+## Dodawanie
+```
+succ two l o = l(l(l o))
+add three two l o = l(l(l(l(l o))))
+```
+
+. . .
+
+```
+add m n = m succ n
+add = \m\n\f\x.m f (m f (n f x))
+```
+
+## Mnożenie
+
+Idea:
+
+$(f^n)^m(x) = f^{m*n}(x)$
+
+```
+mul three two = l(l(l(l(l(l o)))))
+```
+
+. . .
+
+```
+mul = \m\n\f.m(n f)
+```
+
+
+# Prosta rekurencja
+\relax
+
+$f(0) = c$
+
+$f(n+1) = h(n,f(n))$
+
+Stworzymy ciąg par $(0,a_0),(1,a_1),...,(n,a_n)$ taki, że
+
+$a_0 = c;\ a_{i+1} = h(a_i);\ f(n) = snd(a_n)$
+
+`init = pair zero c`
+
+`step = \p. pair (succ(fst p)) (h p)`
+
+`f = \n. snd(n step init)`
+
+# Poprzednik
+
+$pred(0) = 0$
+
+$pred(n+1) = h(n, f(n))$
+
+$h\,(x, y) = x$
+
+. . .
+
+```
+init = pair zero zero
+step = \x. pair (succ (fst x)) (fst x)
+pred = \n. snd (n step init)
+```
+
+## Odejmowanie
+
+sub n m = m pred n
+
+# Listy
+\relax
+
+```
+nil = pair true true
+isnil = fst
+cons h t = pair false (pair h t)
+```
+
+**Ćwiczenie:** napisz funkcje dające głowę i ogon listy
+
+. . .
+
+```
+head = \z.fst(snd z)
+tail = \z.snd(snd z)
+```
+
+
+# Dodatki
+\relax
+
+
+## Potęgowanie
+```
+exp m n = \f\x.(n m) f x
+```
+albo krócej
+```
+exp = \m n. n m
+```
+
+## Listy inaczej
+
+```
+nil = false
+cons = pair
+head = fst
+```
+
+# Podstawienie
+
+$(\lambda x.M)N \leadsto M[N/x]$
+
+$M[N/x]$ oznacza ``M z N wstawionym zamiast x''
+
+$x[N/x] = N$
+
+$y[N/x] = y$ (gdy $x\neq y$)
+
+$(M_1(M_2))[N/x] = M_1[N/x]$
+
+$(\lambda y.M)[N/x] = \lambda y.(M[N/x])$ (gdy y nie występuje w N).
+
+# Technikalia
+
+Zakładamy, że wszystkie zmienne mają różne nazwy
+
+Możemy to zawsze zapewnic odpowiednio zmnieniając nazwy:
+
+$\lambda y.M$ jest równowazne $\lambda z.M[z/y]$ 
+
+
+Tekstowo piszemy `\x.M` zamiast $\lambda x.M$
+
+opuszczamy nawiasy tam gdzie niepotrzebne, MNP oznacza (MN)P
