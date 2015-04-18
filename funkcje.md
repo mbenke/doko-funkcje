@@ -88,7 +88,7 @@ true = \x y. x
 false = \x y. y
 
 true x y = x
-true x y = y
+false x y = y
 ```
 
 . . .
